@@ -44,4 +44,86 @@ SELECT
 		 *
 	FROM tbl_menu
 	WHERE 10000 < menu_price OR 5000 >= menu_price;
-	
+
+-- --------------------------------------------------------
+SELECT
+		 menu_code
+	  , menu_name
+	  , menu_price
+	  , category_code
+	  , orderable_status
+	FROM tbl_menu
+  WHERE menu_price > 5000
+     OR category_code = 10;
+     
+SELECT
+		 menu_code
+	  , menu_name
+	  , menu_price
+	  , category_code
+	  , orderable_status
+	FROM tbl_menu
+  WHERE menu_price > 5000
+    and category_code = 10;
+
+-- --------------------------------------------------------------
+-- between 연산자 활용하기
+-- 가격이 5000원 이상이면서 9000원 이하인 메뉴 전체 컬럼 조회
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE menu_price >= 5000
+    AND menu_price <= 9000;
+
+-- 닫힌 구간일 때(이상, 이하)
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE menu_price BETWEEN 5000 AND 9000;
+
+-- 반대 범위도 테스트
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE menu_price NOT BETWEEN 5000 AND 9000;
+  
+
+-- ----------------------------------------------
+-- like문
+-- 제목, 작성자 등을 검색할 때 사용
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE menu_name LIKE '%밥%';
+  
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE menu_name NOT LIKE '%밥%';
+
+-- --------------------------------
+-- in 연산자
+SELECT
+		 *
+	FROM tbl_menu
+  WHERE category_code = 5
+     OR category_code = 8
+     OR category_code = 10;
+     
+SELECT
+		 *
+	FROM tbl_menu
+--   WHERE category_code IN (5,8,10);
+  WHERE category_code not IN (5,8,10);
+  
+-- --------------------------------------------
+-- is null 연산자 활용
+SELECT
+		 *
+	FROM tbl_category
+  WHERE ref_category_code is NULL;
+
+SELECT
+		 *
+	FROM tbl_category
+  WHERE ref_category_code is not NULL;
