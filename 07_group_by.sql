@@ -54,3 +54,31 @@ SELECT
 --   having category_code BETWEEN 5 AND 9;
   HAVING SUM(menu_price) >= 20000;
   
+SELECT
+		 category_code
+	  , menu_price
+	FROM tbl_menu
+  WHERE menu_price > 10000
+  GROUP BY category_code
+ HAVING AVG(menu_price)> 12000 -- having 절은 주로 그룹함수 또는 그룹 단위 조건
+  ORDER BY 1 DESC;
+  
+-- -------------------
+-- rollup
+-- group을 묶을 때 하나의 기준(하나의 컬럼)으로 그룹화하여 rollup을 하면
+-- 총 합계의 개념이 나온다.
+SELECT
+		 sum(menu_price) 
+	  , category_code 
+	FROM tbl_menu
+  GROUP BY category_code
+   WITH ROLLUP;
+   
+-- group을 묶을 때 여러개의 기준(여러개의 칼럼)으로 그룹화하여 rollup
+SELECT 
+		 SUM(menu_price)
+	  , menu_price
+	  , category_code
+	FROM tbl_menu
+  GROUP BY menu_price, category_code
+   WITH ROLLUP;
