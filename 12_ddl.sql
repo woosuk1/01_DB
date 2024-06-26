@@ -63,3 +63,31 @@ DESC tb2;
 -- 다시 primary key 제거
 ALTER TABLE tb2 DROP PRIMARY KEY;
 DESC tb2;
+
+/*truncate*/
+-- 데이터 절삭(truncate) vs 삭제(delete)
+-- 테이블의 데이터(데이터 및 관련 제약조건 관련 등 깔끔하게 제거)
+-- 테이블의 초기화(테이블 초기 상태로 돌려줌)
+
+CREATE TABLE if not exists tb3(
+	pk INT PRIMARY KEY AUTO_INCREMENT,
+	fk INT,
+	col1 VARCHAR(255),
+	CHECK(col1 IN ('Y', 'N'))
+) ENGINE=INNODB;
+
+
+INSERT
+	INTO tb3
+VALUES
+(
+  NULL
+, 1
+, 'n'
+);
+
+DESC tb3;
+
+TRUNCATE TABLE tb3;
+
+SELECT * FROM tb3;
