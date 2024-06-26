@@ -198,12 +198,17 @@ SELECT
 	  , b.dept_title
 	  , a.salary
 	  , a.salary * 12 * a.BONUS AS '연봉'
+	  , a.sal_level
+	  , c.*
 	FROM employee a
 	JOIN department b ON a.dept_code = b.DEPT_ID
 	JOIN sal_grade c ON c.SAL_LEVEL = a.SAL_LEVEL
 	JOIN location d ON d.LOCAL_CODE = b.LOCATION_ID
 	WHERE a.salary > c.MIN_SAL;
 
+SELECT
+	*
+	FROM sal_grade;
 
 -- 6. 한국(KO)과 일본(JP)에 근무하는 직원들의 
 -- 사원명, 부서명, 지역명, 국가명을 조회하시오.(15명)
