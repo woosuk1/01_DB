@@ -58,6 +58,7 @@ UPDATE tbl_menu
 -- 테이블의 행의 갯수가 줄어든다.
 
 SELECT * FROM tbl_menu;
+-- delete와 truncate 시간이 어떻게 다른가??
 DELETE
 	FROM tbl_menu;
 --  rollback; 하면 복원됨
@@ -66,3 +67,28 @@ ROLLBACK;
 -- mysql 또는 mariadb는 autocommit이 기본적으로 'on'이라
 -- insert, update, delete 시에 베이스테이블(메모리)에 바로 반영된다.
 -- 다시 살리고 싶다면 autocommit을 꺼주어야 한다.
+SET autocommit = OFF;
+
+DELETE
+	FROM tbl_menu
+  ORDER BY menu_price --메뉴가격 기준 오름차순
+  LIMIT 2;
+  
+/* replace */
+-- insert 시 primary key(null x, 중복 x, 이후 수정 x)
+-- 또는 unique key(중복 x)가 충돌이 발생하지 않도록
+-- replace를 통해 중복된 데이터는 덮어 씌울 수 있다.
+
+ REPLACE
+	INTO tbl_menu 
+-- REPLACE tbl_menu 도 가능하다..!
+ VALUES
+(
+  17
+, '참기름소주'
+, 5000
+, 10
+, 'y'
+);
+
+SELECT * FROM tbl_menu WHERE menu_code = 17;
