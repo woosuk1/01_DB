@@ -194,35 +194,72 @@ SELECT
 -- 사원명, 직급명, 급여, 연봉을 조회하시오.
 -- 연봉에 보너스포인트를 적용하시오.(20명)
 SELECT
-		 a.emp_name
-	  , b.dept_title
-	  , a.salary
-	  , a.salary * 12 * a.BONUS AS '연봉'
-	  , a.sal_level
-	  , c.*
-	FROM employee a
-	JOIN department b ON a.dept_code = b.DEPT_ID
-	JOIN sal_grade c ON c.SAL_LEVEL = a.SAL_LEVEL
-	JOIN location d ON d.LOCAL_CODE = b.LOCATION_ID
-	WHERE a.salary > c.MIN_SAL;
+		 *
+	FROM job, employee, sal_grade;
 
 SELECT
-	*
-	FROM sal_grade;
+		 a.emp_name
+	  , b.job_name
+	  , a.salary
+	  , a.salary * ( 1 + IFNULL(a.bonus , 0)) * 12
+	FROM employee a
+	JOIN job b ON a.JOB_CODE = b.JOB_CODE
+	JOIN sal_grade c ON c.sal_level = a.sal_level
+	WHERE c.MIN_SAL < a.SALARY;
+
 
 -- 6. 한국(KO)과 일본(JP)에 근무하는 직원들의 
 -- 사원명, 부서명, 지역명, 국가명을 조회하시오.(15명)
-
+SELECT
+		 a.emp_name
+	  , b.DEPT_TITLE
+	  , c.LOCAL_NAME
+	  , d.NATIONAL_NAME
+	FROM employee a
+	JOIN department b ON a.DEPT_CODE = b.DEPT_ID
+	JOIN location c ON b.LOCATION_ID = c.LOCAL_CODE
+	JOIN NATIONAL d ON c.NATIONAL_CODE = d.NATIONAL_CODE
+	WHERE d.national_name = '한국' OR d.NATIONAL_NAME = '일본';
 
 -- 7. 같은 부서에 근무하는 직원들의 사원명, 부서코드, 동료이름을 조회하시오.
 -- self join 사용(60명)
 
-
+SELECT
+		 a.EMP_NAME
+	  , a.DEPT_CODE
+	  , b.EMP_NAME
+	FROM employee a
+	JOIN employee b ON a.DEPT_CODE = b.DEPT_CODE
+	WHERE a.EMP_ID != b.emp_id
+	ORDER BY 1;
 -- 8. 보너스포인트가 없는 직원들 중에서 직급코드가 J4와 J7인 직원들의 사원명, 직급명, 급여를 조회하시오.
 -- 단, join과 IN 사용할 것(8명)
-
+SELECT
+		 a.emp_name
+	  , b.JOB_NAME
+	  , a.salary
+	FROM (SELECT
+					 *
+				FROM employee c
+				WHERE c.bonus IS NULL) a
+	JOIN job b ON a.job_code = b.job_code
+	WHERE a.job_code IN ('j4','j7');
 
 -- 9. 직급이 대리이면서 아시아 지역(ASIA1, ASIA2, ASIA3 모두 해당)에 근무하는 직원 조회
 -- 사번(EMPLOYEE.EMP_ID), 이름(EMPLOYEE.EMP_NAME), 직급명(JOB.JOB_NAME), 부서명(DEPARTMENT.DEPT_TITLE),
 -- 근무지역명(LOCATION.LOCAL_NAME), 급여(EMPLOYEE.SALARY)를 조회하시오
 -- (해당 컬럼을 찾고, 해당 컬럼을 지닌 테이블들을 찾고, 테이블들을 어떤 순서로 조인해야 하는지 고민하고 SQL문을 작성할 것)
+
+SELECT
+		 a.emp_id
+	  , a.emp_name
+	  , b.JOB_NAME
+	  , c.DEPT_TITLE
+	  , d.LOCAL_NAME
+	  , a.SALARY
+	FROM employee a
+	JOIN job b ON a.JOB_CODE = b.JOB_CODE
+	JOIN department c ON a.DEPT_CODE = c.DEPT_ID
+	JOIN location d ON c.LOCATION_ID = d.LOCAL_CODE
+	WHERE b.JOB_NAME = '대리' AND d.LOCAL_NAME IN  ('ASIA1','ASIA2','ASIA3');
+	

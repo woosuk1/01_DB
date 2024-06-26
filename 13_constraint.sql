@@ -183,5 +183,4 @@ SELECT * FROM user_foreignkey2;
 DELETE
 	FROM user_grade
   WHERE grade_code = 10;
-  
 SELECT * FROM user_foreignkey2;  
