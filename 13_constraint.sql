@@ -183,4 +183,50 @@ SELECT * FROM user_foreignkey2;
 DELETE
 	FROM user_grade
   WHERE grade_code = 10;
-SELECT * FROM user_foreignkey2;  
+SELECT * FROM user_foreignkey2;
+
+/* check 제약조건(조건식을 활용한) */
+DROP TABLE if EXISTS user_check;
+CREATE TABLE if NOT EXISTS user_check(
+	user_no INT AUTO_INCREMENT PRIMARY KEY,
+	user_name VARCHAR(255) NOT NULL,
+	gender VARCHAR(3) CHECK(gender IN ('남', '여')), 
+	age INT CHECK(age >= 19)	
+) ENGINE = INNODB;
+
+INSERT
+	INTO user_check
+VALUES
+(NULL, '홍길동', '남', 25),
+(NULL, '이순신', '남', 33);
+
+SELECT * FROM user_check;
+
+-- 성별에 잘못된 값 입력해보기
+INSERT
+	INTO user_check
+VALUES
+(NULL, '아메바', '중', 19);
+
+INSERT
+	INTO user_check
+VALUES
+(NULL, '유관순', '여', 16);
+
+/* default 제약조건 */
+CREATE TABLE if NOT EXISTS tbl_country(
+	country_code INT AUTO_INCREMENT PRIMARY KEY,
+	country_name VARCHAR(255) DEFAULT '한국',
+	population VARCHAR(255) DEFAULT '0명',
+	add_day DATE DEFAULT (CURRENT_DATE),
+	add_time DATETIME DEFAULT (CURRENT_TIME)
+) ENGINE = INNODB;
+
+-- datetime은 지역에 따라 유동적으로 시간을 보여줌(서버에서)
+INSERT
+	INTO tbl_country
+VALUES
+(NULL, DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+
+SELECT * FROM tbl_Country;
+
